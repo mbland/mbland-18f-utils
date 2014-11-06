@@ -8,7 +8,7 @@
 #
 # Author: Mike Bland (michael.bland@gsa.gov)
 # Date:   2014-11-06
-# URL:    https://github.com/mbland/mbland-18f-utils/hacks/clone-18f-repos.sh
+# Source: https://github.com/mbland/mbland-18f-utils
 
 REPOS="
   18f-slack \
