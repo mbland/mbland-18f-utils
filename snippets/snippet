@@ -1,0 +1,53 @@
+#! /bin/bash
+#
+# Helper script that opens the current day's snippets.
+#
+# The filename is a timestamp of the current date. Automatically creates the
+# snippets directory, quarterly directory, daily directory, and current
+# quarter symlink if necessary.
+#
+# Author: Mike Bland (michael.bland@gsa.gov)
+# Date:   2014-11-05
+# Source: https://github.com/mbland/mbland-18f-utils
+
+read YEAR MONTH DAY <<<$(date "+%Y %m %d")
+QUARTER=
+
+case $MONTH in
+  01|02|03)
+    QUARTER=q1
+    ;;
+  04|05|06)
+    QUARTER=q2
+    ;;
+  07|08|09)
+    QUARTER=q3
+    ;;
+  10|11|12)
+    QUARTER=q4
+    ;;
+esac
+
+if [[ -z $QUARTER ]]; then
+  echo "Parsing MONTH failed: $MONTH"
+  exit 1
+fi
+
+SNIPPET_HOME=$HOME/Documents/snippets
+CURRENT_QUARTER=$YEAR$QUARTER
+QUARTER_DIR=$SNIPPET_HOME/$CURRENT_QUARTER
+CURRENT_LINK=$SNIPPET_HOME/current
+
+if [[ ! -d  $QUARTER_DIR ]]; then
+  mkdir -p $QUARTER_DIR
+  rm -f $CURRENT_LINK
+  ln -s $CURRENT_QUARTER $CURRENT_LINK
+fi
+
+DAILY_DIR=$QUARTER_DIR/dailies
+
+if [[ ! -d $DAILY_DIR ]]; then
+  mkdir $DAILY_DIR
+fi
+
+$EDITOR $DAILY_DIR/${YEAR}${MONTH}${DAY}.txt
