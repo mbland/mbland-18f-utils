@@ -61,12 +61,18 @@ else
   snippets.gsub!(/\{\{/,'')
   snippets.gsub!(/\}\}/,'')
 end
+snippets.gsub!(/^\n\n+/m, '')
 
 parsed = []
 
 snippets.each_line do |line|
+  line.rstrip!
+
   # Convert headline markers to h4, since the layout uses h3.
   line.sub!(/^(#+)/, '####')
+
+  # Convert Last week/this week markers to h3.
+  parsed << "\n" if line.sub!(/([Ll]ast|[Tt]his) [Ww]eek.?$/, '### \0')
 
   # Add item markers for those who used plaintext and didn't add them.
   line.sub!(/^([A-Za-z0-9])/, '- \1') unless line =~ /week:$/
