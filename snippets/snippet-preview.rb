@@ -2,8 +2,6 @@
 #
 # Generates an HTML page to preview one's snippets before submitting.
 #
-# NOTE: Requires the 'redcarpet' gem.
-#
 # Performs "{{" and "}}" redaction, and filters the snippets through Markdown,
 # even if no Markdown markup is employed. Creates a preview file in the
 # current directory, the local URL to which is printed to standard output.
@@ -17,6 +15,7 @@
 
 require 'optparse'
 require 'redcarpet'
+require 'weekly_snippets/publisher'
 
 options = {}
 snippets = ''
@@ -55,33 +54,31 @@ rescue Exception => e
   exit 1
 end
 
-if options[:redact]
-  snippets.gsub!(/\{\{.*?\}\}/m,'')
-else
-  snippets.gsub!(/\{\{/,'')
-  snippets.gsub!(/\}\}/,'')
-end
-snippets.gsub!(/^\n\n+/m, '')
-
-parsed = []
+last_week = []
+this_week = []
+current = last_week
 
 snippets.each_line do |line|
-  line.rstrip!
-
-  # Convert headline markers to h4, since the layout uses h3.
-  line.sub!(/^(#+)/, '####')
-
-  # Convert Last week/this week markers to h3.
-  parsed << "\n" if line.sub!(/([Ll]ast|[Tt]his) [Ww]eek.?$/, '### \0')
-
-  # Add item markers for those who used plaintext and didn't add them.
-  line.sub!(/^([A-Za-z0-9])/, '- \1') unless line =~ /week:$/
-
-  # Fixup item markers missing a space.
-  line.sub!(/^[-*]([^ ])/, '- \1')
-
-  parsed << line unless line.empty? or line =~ /^[\t ]*$/
+  next if line =~ /[Ll]ast [Ww]eek.?$/
+  if line =~ /[Tt]his [Ww]eek.?$/
+    current = this_week 
+    next
+  end
+  current << line
 end
+
+publisher = ::WeeklySnippets::Publisher.new(
+  headline: "\n###", public_mode: options[:redact])
+snippets = publisher.publish({
+  'today' => [
+    {'username' => 'unused',
+     'timestamp' => 'unused',
+     'last-week' => last_week.join,
+     'this-week' => this_week.join,
+     'public' => true,
+     'markdown' => true,
+    },
+]})['today'][0]
 
 title = "Snippet Preview#{" With Redactions" if options[:redact]}"
 markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML.new)
@@ -91,7 +88,10 @@ outfile = open(output_path, 'wb')
 
 outfile.write "<html><head><title>#{title}</title></head>\n"
 outfile.write "<body><h1>#{title}</h1>\n"
-outfile.write markdown.render(parsed.join("\n"))
+outfile.write "<h2>Last week</h2>\n"
+outfile.write markdown.render(snippets['last-week'])
+outfile.write "<h2>This week</h2>\n"
+outfile.write markdown.render(snippets['this-week'])
 outfile.write "\n</body></html>"
 outfile.close
 puts "file://#{output_path}"
