@@ -7,9 +7,10 @@ require 'uri'
 
 BASE_URL = 'https://tock.18f.gov/reports/'
 
-if ARGV.size < 2 || ENV['OAUTH_COOKIE'].nil?
+if ARGV.size != 2 || ENV['OAUTH_COOKIE'].nil?
   abort [
     "Usage: OAUTH_COOKIE=cookie #{$0} YYYY-MM-DD[,...] project_name[,...]",
+    "OAUTH_COOKIE must contain a valid 18f.gov _oauthproxy cookie value.",
     "Multiple dates and project names can be retrieved by providing comma-",
     "separated lists of date stamps and project names."
   ].join("\n")
