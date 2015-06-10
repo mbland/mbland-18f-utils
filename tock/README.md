@@ -5,7 +5,7 @@ Filters Tock project hours by user.
 ### Usage
 
 First, grab the value of the `_oauthproxy` cookie. In Chrome, you can access
-the [chrome://settings/cookies](cookies settings), search for the `18f.gov`
+the [cookies settings](chrome://settings/cookies), search for the `18f.gov`
 cookie, click on the `_oauthproxy` value and copy the value of the `Content:`
 field.
 
