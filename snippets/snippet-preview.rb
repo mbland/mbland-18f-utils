@@ -89,9 +89,9 @@ outfile = open(output_path, 'wb')
 outfile.write "<html><head><title>#{title}</title></head>\n"
 outfile.write "<body><h1>#{title}</h1>\n"
 outfile.write "<h2>Last week</h2>\n"
-outfile.write markdown.render(snippets['last-week'])
+outfile.write markdown.render(snippets['last-week'] || '')
 outfile.write "<h2>This week</h2>\n"
-outfile.write markdown.render(snippets['this-week'])
+outfile.write markdown.render(snippets['this-week'] || '')
 outfile.write "\n</body></html>"
 outfile.close
 puts "file://#{output_path}"
