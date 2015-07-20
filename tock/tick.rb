@@ -37,14 +37,15 @@ date_stamps.split(',').sort.each do |date_stamp|
     if project_names.include? project
       (project_data[project] ||= []) << {
         :user => row['User'],
-        :hours => row['Number of Hours'],
+        :hours => row['Number of Hours'].to_f,
       }
     end
   end
 
   puts "*** #{date_stamp} ***"
   project_data.each do |project_name,billing|
-    puts "  --- #{project_name} ---"
+    total = billing.map {|i| i[:hours]}.reduce :+
+    puts "  --- #{project_name}: #{total} ---"
     billing.each {|i| puts "    #{i[:user]} %5.2f" % i[:hours]}
   end
 end
