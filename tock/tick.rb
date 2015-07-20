@@ -32,17 +32,13 @@ date_stamps.split(',').sort.each do |date_stamp|
 
   fields = {}
   project_data = {}
-  CSV.parse r.body do |row|
-    if fields.empty?
-      row.each_index {|i| fields[row[i]] = i}
-    else
-      project = row[fields['Project']]
-      if project_names.include? project
-        (project_data[project] ||= []) << {
-          :user => row[fields['User']],
-          :hours => row[fields['Number of Hours']],
-        }
-      end
+  CSV.parse(r.body, :headers => true) do |row|
+    project = row['Project']
+    if project_names.include? project
+      (project_data[project] ||= []) << {
+        :user => row['User'],
+        :hours => row['Number of Hours'],
+      }
     end
   end
 
