@@ -46,6 +46,8 @@ date_stamps.split(',').sort.each do |date_stamp|
   project_data.to_a.sort.each do |project_name,billing|
     total = billing.map {|i| i[:hours]}.reduce :+
     puts "  --- #{project_name}: #{total} ---"
-    billing.each {|i| puts "    #{i[:user]} %5.2f" % i[:hours]}
+    billing.sort_by {|i| i[:hours]}.reverse.each do |i|
+      puts "    #{i[:user]} %5.2f" % i[:hours]
+    end
   end
 end
