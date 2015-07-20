@@ -36,23 +36,23 @@ $ OAUTH_COOKIE=[value of _oauthproxy cookie]
   "18F Hub,18F Guides" 2>&1 | tee burn.txt
 
 *** 2015-05-17 ***
-  --- 18F Hub ---
-    aidan.feldman@gsa.gov  4.50
-    michael.bland@gsa.gov 30.00
-  --- 18F Guides ---
-    michael.bland@gsa.gov  1.00
+  --- 18F Guides: 1.0 ---
+     1.00 michael.bland@gsa.gov
+  --- 18F Hub: 34.5 ---
+    30.00 michael.bland@gsa.gov
+     4.50 aidan.feldman@gsa.gov
 *** 2015-05-24 ***
-  --- 18F Guides ---
-    michael.bland@gsa.gov  0.50
-  --- 18F Hub ---
-    michael.bland@gsa.gov 23.00
-    aidan.feldman@gsa.gov  4.00
+  --- 18F Guides: 0.5 ---
+     0.50 michael.bland@gsa.gov
+  --- 18F Hub: 27.0 ---
+    23.00 michael.bland@gsa.gov
+     4.00 aidan.feldman@gsa.gov
 *** 2015-05-31 ***
-  --- 18F Guides ---
-    michael.bland@gsa.gov  3.00
-  --- 18F Hub ---
-    michael.bland@gsa.gov 25.00
-    aidan.feldman@gsa.gov  2.00
-    michelle.hertzfeld@gsa.gov  1.00
-    colin.macarthur@gsa.gov  1.03
+  --- 18F Guides: 3.0 ---
+     3.00 michael.bland@gsa.gov
+  --- 18F Hub: 29.03 ---
+    25.00 michael.bland@gsa.gov
+     2.00 aidan.feldman@gsa.gov
+     1.03 colin.macarthur@gsa.gov
+     1.00 michelle.hertzfeld@gsa.gov
 ```
